@@ -39,7 +39,8 @@ new Rectangle((int)(game.RenderOffset.X + Position.X - Size.X / 2), (int)(game.R
 
         public virtual void Start() { }
         public abstract void Update(GameTime time);
-        public void Draw(GameTime time)
+        public virtual void IMGUI(GameTime time) { }
+        public virtual void Draw(GameTime time)
         {
             game.SpriteBatch.Begin(blendState: BlendState.Additive);
             game.SpriteBatch.Draw(Sprite, CollisionBox, TextureREct, Color, 0, Vector2.Zero, Effects, 0);

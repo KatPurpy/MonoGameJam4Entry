@@ -56,6 +56,7 @@ using System.Text;
                     Entities.RemoveAt(i);
                     continue;
                 }
+            Entities[i].IMGUI(time);
                 Entities[i].Draw(time);
             }
         }

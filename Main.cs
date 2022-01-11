@@ -37,6 +37,7 @@ namespace MonoGameJam4Entry
         }
         protected override void Initialize()
         {
+            Window.Title = "Super Monkey Post Celebration Diet";
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             PixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             PixelTexture.SetData(new[] { Color.White });
@@ -52,26 +53,19 @@ namespace MonoGameJam4Entry
             EntityManager = new EntityManager();
             EntityManager.AddEntity(new Entity_Platform(this)
             {
-                Position = new Vector2(400,400),
+                Type = Entity_Platform.PlatformType.Still,
+                Position = new Vector2(400,100+40),
                 Size = new(100,20)
             }
                 );
-
-            EntityManager.AddEntity(new Entity_Player(this));
+            EntityManager.AddEntity(new Entity_PlatformSpawner(this));
+            EntityManager.AddEntity(new Entity_Player(this) {Position = new(400,30+40) });
         }
 
         Random r = new();
         protected override void Update(GameTime gameTime)
         {
-            if(gameTime.TotalGameTime.Milliseconds*2 == 500)
-            {
-                EntityManager.AddEntity(new Entity_Platform(this)
-                {
-                    Position = new Vector2((float)((r.NextDouble())*800),-RenderOffset.Y + 300),
-                    Size = new(100, 20)
-                }
-    );
-            }
+            
             EntityManager.Update(gameTime);
         }
 

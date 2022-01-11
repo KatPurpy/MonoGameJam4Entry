@@ -1,4 +1,5 @@
 ﻿using DSastR.Core;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace MonoGameJam4Entry
 {
-    class Entity_Player : Entity
+    public class Entity_Player : Entity
     {
-        float JumpTimer = 0;
+        public bool FatPlatformBlock;
         public Vector2 Velocity;
         public Entity_Player(Main m) : base(m)
         {
@@ -19,11 +20,29 @@ namespace MonoGameJam4Entry
             Size = new(100, 100);
             Sprite = m.Assets.PLACEHOLDER;
         }
-        bool Grounded => Velocity.Y >= 0 && CollidesWith<Entity_Platform>();
+        bool Grounded
+        {
+            get
+            {
+                if (!(Velocity.Y >= 0)) return false;
+                if (CollidesWith<Entity_Platform>(out var plats))
+                {
+                    foreach(var p in plats)
+                    {
+                        if (p.CollisionBox.Bottom > CollisionBox.Bottom)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+        static bool groundedLastFrame = false;
         public override void Update(GameTime time)
         {
             float deltatime = (float)time.ElapsedGameTime.TotalSeconds;
-             Velocity += Vector2.UnitY * 9.8f * 100 * deltatime;
+            Velocity += Vector2.UnitY * 9.8f * 100 * deltatime;
             if (Grounded)
             {
                 Velocity.Y = 0;
@@ -35,36 +54,52 @@ namespace MonoGameJam4Entry
 
             bool left = kbstate.IsKeyDown(Keys.Left);
             bool right = kbstate.IsKeyDown(Keys.Right);
-            if (left)
-            {
-                Velocity.X += -6 * 100 * deltatime;
-                Effects = Microsoft.Xna.Framework.Graphics.SpriteEffects.FlipHorizontally;
-            }
+            bool up = kbstate.IsKeyDown(Keys.Up);
 
-            if (right)
-            {
-                Velocity.X += 6 * 100 * deltatime;
-                Effects = Microsoft.Xna.Framework.Graphics.SpriteEffects.None;
-            }
-            if (Grounded && kbstate.IsKeyDown(Keys.Up))
+   
+                if (left)
+                {
+                    Velocity.X += -6 * 100 * deltatime;
+                    Effects = Microsoft.Xna.Framework.Graphics.SpriteEffects.FlipHorizontally;
+                }
+
+                if (right)
+                {
+                    Velocity.X += 6 * 100 * deltatime;
+                    Effects = Microsoft.Xna.Framework.Graphics.SpriteEffects.None;
+                }
+
+            if (up && Grounded && groundedLastFrame)
             {
                 Velocity.Y = -550;
-                JumpTimer = 0.25f/6;
-
             }
-            game.RenderOffset.Y += 0.5f;
-
-            if(!new Rectangle(-CollisionBox.Width * 2, 0, 800 + CollisionBox.Width * 4, 600+CollisionBox.Height).Contains(CollisionBox))
+            groundedLastFrame = Grounded;
+            game.RenderOffset.Y += 80 * deltatime;
+            
+            if (CollisionBox.Top > 600)
             {
-                game.Exit();
+                Die();
             }
 
-            if (CollidesWith<Entity_Platform>(out var plat))
+            if (Grounded && CollidesWith<Entity_Platform>(out var plat) && Velocity.Y >= 0)
             {
-                Position.Y += 200 * deltatime;
-                foreach(var p in plat) p.Position.Y += 200 * deltatime;
+                plat.Sort((x, y) => x.Type - y.Type);
+                FatPlatformBlock = false;
+                    foreach(var p in plat) p.HandlePlayer(deltatime,this);
             }
+
             Position += Velocity * deltatime;
+
+        }
+
+        public override void IMGUI(GameTime time)
+        {
+            ImGui.Text(time.TotalGameTime.TotalSeconds.ToString());
+        }
+
+        public void Die()
+        {
+            game.Exit();
         }
     }
 }
