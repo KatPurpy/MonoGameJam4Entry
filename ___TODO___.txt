@@ -1,0 +1,39 @@
+﻿4 LOCATIONS
+GYM
+MOUNTAINS
+SKY
+SPACE
+
+LOCATIONS 
+GYM - Upgrade monkey, buy boosters on coins collected throughout runs
+MOUNTAINS - first stage - still platforms, rocks may be falling
+SKY - clouds fall under you and sometimes birds fly at you
+SPACE - everything is falling and everything is exploding, chaos
+
+WHAT TO UPGRADE
+- MUSCLE - better control over character
+- WEIGHT - clouds wall less fast
+- SURVIVABILITY FACTOR - chance to have a second life
+
+BONUSES
+- BRAIN - absolute control over monke and slowdown time
+- ROTTEN BANANA - big fart makes you skip 10 seconds of stage
+- B0LL OF STRONKTH - invulnurability
+
+ACHIEVEMENTS
+- 100% PHAT - excercise for the first time
+- MONKEROOF - first run (it starts by monkey breaking through gym roof)
+- NEOTIME - get BRAIN
+- 5T1LLB0LL5 - get B0LL OF STRONKTH
+- STINKY ACCIDENT - eat one rotten banana
+- HOBO - eat five rotten bananas throughout one run
+- 0% PHAT - complete gym training
+
+- Scrolling background that changes (move a big image and fade between each part) 
+	based on level progression
+- Wind parameter
+- Basic gameloop (gym -> break through ceiling -> here we go)
+- Abilities
+- Enemy that pushes monkey
+- Enemy birds that appear from side to side
+- Mirror platforms
