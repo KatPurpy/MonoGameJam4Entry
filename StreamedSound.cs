@@ -15,9 +15,12 @@ namespace MonoGameJam4Entry
 {
     public class StreamedSound : IDisposable
     {
+        static StreamedSound CurrentSong;
+
         VorbisReader reader;
         public DynamicSoundEffectInstance sound;
         Thread thread;
+        Thread autoUpdate;
 
         int samplesReady = 0;
         int buffersToRead = 3;
@@ -36,14 +39,27 @@ namespace MonoGameJam4Entry
 
         public void Play()
         {
+            CurrentSong?.Dispose();
+            CurrentSong = this;
             sound.Play();
             thread = new Thread(new ThreadStart(AudioThread));
             thread.Start();
+            autoUpdate = new Thread(new ThreadStart(AutoUpdateThread));
+            autoUpdate.Start();
         }
 
         private void Sound_BufferNeeded(object sender, EventArgs e)
         {
             Interlocked.Increment(ref buffersToRead);
+        }
+
+        public void AutoUpdateThread()
+        {
+            while (!stopThread)
+            {
+                Update();
+                Thread.Sleep(5);
+            }
         }
 
         public void Update()

@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using DSastR.Core;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,16 +17,17 @@ namespace MonoGameJam4Entry
     public class Main : Game
     {
         public static Main _;
-        public StreamedSound currentMusic;
 
         GraphicsDeviceManager gdm;
         public SpriteBatch SpriteBatch;
         public Texture2D PixelTexture;
         public Assets Assets;
 
-        ImGuiRenderer ImGuiRenderer;
-        ImFontPtr fontPTR;
+        public static Random Random = new();
 
+        public ImGuiRenderer ImGuiRenderer;
+        public ImFontPtr FontPTR;
+        RenderTarget2D mainRenderTarget;
         public Vector2 RenderOffset;
 
         public EntityManager EntityManager;
@@ -37,6 +39,7 @@ namespace MonoGameJam4Entry
         }
         protected override void Initialize()
         {
+            mainRenderTarget = new RenderTarget2D(GraphicsDevice, 800, 600,false,SurfaceFormat.Color,DepthFormat.Depth24Stencil8);
             Window.Title = "Super Monkey Post Celebration Diet";
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             PixelTexture = new Texture2D(GraphicsDevice, 1, 1);
@@ -50,43 +53,48 @@ namespace MonoGameJam4Entry
             gdm.ApplyChanges();
             Assets = new(this);
 
-            EntityManager = new EntityManager();
-            EntityManager.AddEntity(new Entity_Platform(this)
-            {
-                Type = Entity_Platform.PlatformType.Still,
-                Position = new Vector2(400,100+40),
-                Size = new(100,20)
-            }
-                );
-            EntityManager.AddEntity(new Entity_PlatformSpawner(this));
-            EntityManager.AddEntity(new Entity_Player(this) {Position = new(400,30+40) });
+            EntityManager = new EntityManager(this);
+
+            //EntityManager.AddEntity(new Entity_RunStarter(this));
+            EntityManager.AddEntity(new Entity_Gym(this));
+
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            Assets.Dispose();
+            base.Dispose(disposing);
         }
 
         Random r = new();
         protected override void Update(GameTime gameTime)
         {
-            
             EntityManager.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.SetRenderTarget(mainRenderTarget);
             GraphicsDevice.Clear(Color.Black);
             ImGuiRenderer.BeforeLayout(gameTime);
             unsafe
             {
-                if ((ImFont*)0 == fontPTR.NativePtr)
+                if ((ImFont*)0 == FontPTR.NativePtr)
                 {
 
-                    fontPTR = ImGui.GetIO().Fonts.AddFontFromFileTTF("FONT/ComicNeue-Bold.ttf", 18, null, ImGui.GetIO().Fonts.GetGlyphRangesDefault());
+                    FontPTR = ImGui.GetIO().Fonts.AddFontFromFileTTF("FONT/ComicNeue-Bold.ttf", 18, null, ImGui.GetIO().Fonts.GetGlyphRangesDefault());
                     ImGuiRenderer.RebuildFontAtlas();
                     ImGuiSetStyle();
                 }
             }
            
-            ImGui.PushFont(fontPTR);
+            ImGui.PushFont(FontPTR);
             EntityManager.Draw(gameTime);
             ImGuiRenderer.AfterLayout();
+            GraphicsDevice.SetRenderTarget(null);
+            SpriteBatch.Begin();
+            SpriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, 800, 600), Color.White);
+            SpriteBatch.End();
         }
 
         public static Texture2D LoadTexture(string s)
@@ -127,15 +135,16 @@ namespace MonoGameJam4Entry
                 }
 
                 // TODO: fix getting correct channels from reader
-                return new SoundEffect(pcmBytes, 0, samplesWritten * sizeof(short), sampleRate, reader.Channels == 1 ? AudioChannels.Mono : AudioChannels.Stereo, 0, samplesWritten);
+                AudioChannels channels = reader.Channels == 1 ? AudioChannels.Mono : AudioChannels.Stereo;
+                var a = new SoundEffect(pcmBytes, sampleRate, channels);
+
+                return a;
             }
         }
 
         public static StreamedSound LoadMusic(string s)
         {
-            _.currentMusic?.Dispose();
-
-            return _.currentMusic = new(s);
+            return new(s);
         }
 
         static void ImGuiSetStyle()

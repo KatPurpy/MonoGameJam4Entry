@@ -1,5 +1,6 @@
 ﻿using DSastR.Core;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameJam4Entry;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,11 @@ using System.Text;
     {
         public List<Entity> Entities = new List<Entity>();
 
+    Main game;
+        public EntityManager(Main m)
+    {
+        game = m;
+    }
         public int AddEntity(Entity obj)
         {
             obj.NeedsToStart = true;
@@ -22,7 +28,7 @@ using System.Text;
             for (int i = Entities.Count-1; i >= 0; i--)
             {
                 var c = Entities[i];
-                if (c.Dead)
+                if (c.Dead || !c.Activated)
                 {
                     continue;
                 }
@@ -50,15 +56,18 @@ using System.Text;
 
         public void Draw(GameTime time)
         {
-            for(int i = Entities.Count - 1; i >= 0; i--){
+        game.SpriteBatch.Begin(SpriteSortMode.FrontToBack,samplerState:SamplerState.PointClamp);
+        for (int i = Entities.Count - 1; i >= 0; i--){
                 if (Entities[i].Dead)
                 {
                     Entities.RemoveAt(i);
                     continue;
                 }
-            Entities[i].IMGUI(time);
+
+                Entities[i].IMGUI(time);
                 Entities[i].Draw(time);
             }
+        game.SpriteBatch.End();
         }
         
         public void Clear()

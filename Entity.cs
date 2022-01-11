@@ -19,9 +19,13 @@ namespace DSastR.Core
         public Vector2 Position = new Vector2(0, 0);
         public Vector2 Size = new Vector2(0, 0);
         public Texture2D Sprite;
-        public Rectangle? TextureREct;
+        public Rectangle? SourceRect;
         public Color Color = Color.White;
+        public float Alpha = 1;
+        public float LayerDepth = 0.5f;
         public SpriteEffects Effects = SpriteEffects.None;
+
+        public bool Activated = true;
 
         protected Main game;
         public Rectangle CollisionBox
@@ -42,9 +46,7 @@ new Rectangle((int)(game.RenderOffset.X + Position.X - Size.X / 2), (int)(game.R
         public virtual void IMGUI(GameTime time) { }
         public virtual void Draw(GameTime time)
         {
-            game.SpriteBatch.Begin(blendState: BlendState.Additive);
-            game.SpriteBatch.Draw(Sprite, CollisionBox, TextureREct, Color, 0, Vector2.Zero, Effects, 0);
-            game.SpriteBatch.End();
+            game.SpriteBatch.Draw(Sprite, CollisionBox, SourceRect, Color * Alpha, 0, Vector2.Zero, Effects, LayerDepth);
         }
 
         public virtual void Destroy() {

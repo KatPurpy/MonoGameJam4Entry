@@ -12,13 +12,19 @@ namespace MonoGameJam4Entry
 {
     public class Entity_Player : Entity
     {
+        public float[] StronkthParams = new float[] {3,6,9 };
+        public float[] JumpForceParams = new float[] {-375,-550,-750 };
+        public float[] UndeadalityParams = new float[] {0,0.10f,0.25f };
+
+        public int Stronkth = 0, JumpForce = 0, Undeadality = 0;
+
         public bool FatPlatformBlock;
         public Vector2 Velocity;
         public Entity_Player(Main m) : base(m)
         {
             Position = new(400, 300);
             Size = new(100, 100);
-            Sprite = m.Assets.PLACEHOLDER;
+            Sprite = m.Assets.placeholder;
         }
         bool Grounded
         {
@@ -59,22 +65,22 @@ namespace MonoGameJam4Entry
    
                 if (left)
                 {
-                    Velocity.X += -6 * 100 * deltatime;
+                    Velocity.X += -StronkthParams[Stronkth] * 100 * deltatime;
                     Effects = Microsoft.Xna.Framework.Graphics.SpriteEffects.FlipHorizontally;
                 }
 
                 if (right)
                 {
-                    Velocity.X += 6 * 100 * deltatime;
+                    Velocity.X += StronkthParams[Stronkth] * 100 * deltatime;
                     Effects = Microsoft.Xna.Framework.Graphics.SpriteEffects.None;
                 }
 
             if (up && Grounded && groundedLastFrame)
             {
-                Velocity.Y = -550;
+                Velocity.Y = JumpForceParams[JumpForce];
             }
             groundedLastFrame = Grounded;
-            game.RenderOffset.Y += 80 * deltatime;
+            
             
             if (CollisionBox.Top > 600)
             {
@@ -99,7 +105,9 @@ namespace MonoGameJam4Entry
 
         public void Die()
         {
-            game.Exit();
+            game.EntityManager.AddEntity(new Entity_PlayerDeathExplosion(game, Position));
+            Dead = true;
+            //game.Exit();
         }
     }
 }
