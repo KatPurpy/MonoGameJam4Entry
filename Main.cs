@@ -1,5 +1,4 @@
-﻿using DSastR.Core;
-using ImGuiNET;
+﻿using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,6 +21,8 @@ namespace MonoGameJam4Entry
         public SpriteBatch SpriteBatch;
         public Texture2D PixelTexture;
         public Assets Assets;
+
+        public SamplerState Sampler;
 
         public static Random Random = new();
 
@@ -58,6 +59,10 @@ namespace MonoGameJam4Entry
             //EntityManager.AddEntity(new Entity_RunStarter(this));
             EntityManager.AddEntity(new Entity_Gym(this));
 
+            Sampler = new SamplerState();
+            Sampler.AddressU = TextureAddressMode.Wrap;
+            Sampler.AddressV = TextureAddressMode.Wrap;
+            Sampler.Filter = TextureFilter.Point;
         }
 
         protected override void Dispose(bool disposing)
@@ -67,6 +72,8 @@ namespace MonoGameJam4Entry
         }
 
         Random r = new();
+
+
         protected override void Update(GameTime gameTime)
         {
             EntityManager.Update(gameTime);

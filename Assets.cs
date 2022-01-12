@@ -26,19 +26,23 @@ namespace MonoGameJam4Entry
         public Texture2D BG2;
         public Texture2D BG3;
         public Texture2D DEATH;
+        public Texture2D BLIZZARD;
 
         public StreamedSound gym;
         public StreamedSound mountain;
         public StreamedSound space;
 
+        public SoundEffect coin;
+        public SoundEffect platjump;
         public SoundEffect death1;
         public SoundEffect death2;
         public SoundEffect death3;
         public SoundEffect death4;
 
-
         public SoundEffect RandomDeath => new SoundEffect[] { death1, death2, death3, death4 }[Main.Random.Next(0, 4)];
-        
+
+
+
         public Assets (Main m)
         {
             foreach(var a in fieldInfos)
@@ -48,7 +52,7 @@ namespace MonoGameJam4Entry
         }
         public void Dispose()
         {
-            foreach(var f in fieldInfos)
+            foreach(var f in typeof(Assets).GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
             {
                 (f.GetValue(this) as IDisposable)?.Dispose();
             }

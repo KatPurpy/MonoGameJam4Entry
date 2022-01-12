@@ -1,4 +1,4 @@
-﻿using DSastR.Core;
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameJam4Entry;
@@ -56,7 +56,7 @@ using System.Text;
 
         public void Draw(GameTime time)
         {
-        game.SpriteBatch.Begin(SpriteSortMode.FrontToBack,samplerState:SamplerState.PointClamp);
+        game.SpriteBatch.Begin(SpriteSortMode.FrontToBack,samplerState:game.Sampler);
         for (int i = Entities.Count - 1; i >= 0; i--){
                 if (Entities[i].Dead)
                 {

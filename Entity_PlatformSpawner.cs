@@ -1,5 +1,4 @@
-﻿using DSastR.Core;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +12,13 @@ namespace MonoGameJam4Entry
     {
         public enum SpawnMode
         {
-            MountainClimb,
-            MountainClimbHarder,
-            Clouds,
-            CloudsHarder,
+            Mountain,
+            Sky,
             Space,
-            SpaceHarder
         }
+        static SpawnMode SPAWNMODE = SpawnMode.Mountain;
+
+        public static void SetSpawnMode(SpawnMode spawnMode) => SPAWNMODE = spawnMode;
 
         public Entity_PlatformSpawner(Main m) : base(m)
         {
@@ -28,6 +27,9 @@ namespace MonoGameJam4Entry
             Sprite = m.PixelTexture;
             r = Main.Random;
         }
+
+
+
         Random r;
         public override void Start()
         {
@@ -35,22 +37,31 @@ namespace MonoGameJam4Entry
         }
         public override void Update(GameTime time)
         {
-            Generator_Level1(time);
-        }
+            switch (SPAWNMODE) {
+                case SpawnMode.Mountain:
+                Generator_Level1(time);
+                    break;
+                case SpawnMode.Sky:
+                    Generator_Level2(time);
+                    break;
+        } }
         float screensize = 600/6;
         int lvl1_ghostplatformcount = 0;
         bool lvl1_easymode = true;
         const int lvl1_easymodethreshold = 4 * 3;
-        int lvl1_easymodecount = 0;
+        int lvl1_screencount = 0;
         void Generator_Level1(GameTime time)
         {
-            
+            if (!lvl1_easymode)
+            {
+                Entity_Player.WindFactor = (float)(Math.Sin(game.RenderOffset.Y / 600));
+            }
             float y = 0;
             if (Entity_RunController.LengthAccumulator > screensize)
             {
                 
-                lvl1_easymodecount++;
-                if (lvl1_easymodecount > lvl1_easymodethreshold)
+                lvl1_screencount++;
+                if (lvl1_screencount > lvl1_easymodethreshold)
                 {
                     lvl1_easymode = false;
                 }

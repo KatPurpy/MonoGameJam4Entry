@@ -1,4 +1,4 @@
-﻿using DSastR.Core;
+﻿
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -16,6 +16,7 @@ namespace MonoGameJam4Entry
             Sprite = m.Assets.DEATH;
             SourceRect = new(0, 0, 64, 64);
             Size = new(512,512);
+            LayerDepth = 1;
         }
         public override void Start()
         {
@@ -34,6 +35,7 @@ namespace MonoGameJam4Entry
                 rect.Y += 5* 64;
                 SourceRect = rect;
             }
+            if (frame > 186-4) Size = new(0, 0);
             if (frame == 245) game.Exit();
         }
     }

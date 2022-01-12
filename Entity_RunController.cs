@@ -1,4 +1,4 @@
-﻿using DSastR.Core;
+﻿
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ namespace MonoGameJam4Entry
 
         public ScrollSpeed Speed = ScrollSpeed.Low;
 
+
         Entity_Player monkey;
         public Entity_RunController(Main m, Entity_Player monke) : base(m)
         {
@@ -27,7 +28,7 @@ namespace MonoGameJam4Entry
 
         public override void Start()
         {
-
+            
         }
         float baseSpeed => Speed switch {
             ScrollSpeed.Low => 35,
@@ -47,9 +48,7 @@ namespace MonoGameJam4Entry
             speed += deltatime * 0.5f;
 
             float edge = 1- ((game.RenderOffset.Y + monkey.Position.Y) / (600));
-            Console.WriteLine(edge);
             penaltySpeed = (edge < (1-0.25f) ? 0 : 200) * edge;
-            Console.WriteLine(penaltySpeed);
         }
     }
 }

@@ -7,8 +7,7 @@ using System.Text;
 using System.Text.Json;
 
 
-namespace DSastR.Core
-{
+
     public abstract class Entity
     {
         public Entity (Main m)
@@ -53,4 +52,3 @@ new Rectangle((int)(game.RenderOffset.X + Position.X - Size.X / 2), (int)(game.R
             Dead = true;
         }
     }
-}

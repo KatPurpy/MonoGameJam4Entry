@@ -1,5 +1,4 @@
-﻿using DSastR.Core;
-using ImGuiNET;
+﻿using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -19,6 +18,24 @@ namespace MonoGameJam4Entry
             Sprite = m.Assets.placeholder;
         }
 
+        readonly int[] MoveSpeedUpgradeCosts = new[]
+        {
+            13,
+            30
+        };
+
+        readonly int[] JumpUpgradeCosts = new[]
+        {
+            10,
+            30
+        };
+
+        readonly int[] UndeadalityFactor = new[]
+        {
+            10,
+            20
+        };
+
         public override void Start()
         {
             game.Assets.gym.Play();
@@ -32,9 +49,9 @@ namespace MonoGameJam4Entry
         public override void IMGUI(GameTime time)
         {
             ImGui.Begin("WORKOUT, PHAT BOI",ImGuiWindowFlags.AlwaysAutoResize);
-            BonusButton(game.PixelTexture,"STRONKTH (0/3)","Control your fat body better",50);
+            BonusButton(game.PixelTexture,"STRONKTH (0/2)","Control your fat body better",50);
             ImGui.SameLine();
-            BonusButton(game.PixelTexture,"PHAT REDUCE (0/3)","Higher jumps",100);
+            BonusButton(game.PixelTexture,"PHAT REDUCE (0/2)","Higher jumps",100);
             ImGui.SameLine();
             BonusButton(game.PixelTexture,"UNDEADALITY FACTOR (0/2)","20%% chance of magically resurrecting. tip: gud git", 50);
             ImGui.End();

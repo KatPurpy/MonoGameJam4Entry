@@ -1,4 +1,4 @@
-﻿using DSastR.Core;
+﻿
 using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -20,8 +20,13 @@ namespace MonoGameJam4Entry
 
         public bool FatPlatformBlock;
         public Vector2 Velocity;
+        public int CoinsCollected = 0;
+
+        public static float WindFactor = 0;
+
         public Entity_Player(Main m) : base(m)
         {
+            WindFactor = 0;
             Position = new(400, 300);
             Size = new(100, 100);
             Sprite = m.Assets.placeholder;
@@ -62,7 +67,8 @@ namespace MonoGameJam4Entry
             bool right = kbstate.IsKeyDown(Keys.Right);
             bool up = kbstate.IsKeyDown(Keys.Up);
 
-   
+
+            
                 if (left)
                 {
                     Velocity.X += -StronkthParams[Stronkth] * 100 * deltatime;
@@ -94,13 +100,39 @@ namespace MonoGameJam4Entry
                     foreach(var p in plat) p.HandlePlayer(deltatime,this);
             }
 
+            if (CollidesWith<Entity_Coin>(out var coins))
+            {
+                foreach (var c in coins)
+                {
+                    CoinsCollected++;
+                    c.Dead = true;
+                    game.Assets.coin.Play(0.25f,(float)(Main.Random.NextDouble()/2),0);
+                }
+            }
+            const float MaxSpeed = 800;
+            Velocity.X = Math.Max(-MaxSpeed, Math.Min(MaxSpeed, Velocity.X));
+            Velocity.X -= StronkthParams[Stronkth] * WindFactor * deltatime * 60;
             Position += Velocity * deltatime;
+            if (Position.X < 0) Position.X = 800;
+            else if (Position.X > 800) Position.X = 0;
 
+            Entity_Background.HorizontalBGScroll += Velocity.X * deltatime / 2;
         }
 
         public override void IMGUI(GameTime time)
         {
             ImGui.Text(time.TotalGameTime.TotalSeconds.ToString());
+            ImGui.Text("CoinsCollected: " + CoinsCollected);
+            ImGui.Text("AAA " + WindFactor);
+        }
+        float blizzardX = 0;
+        public override void Draw(GameTime time)
+        {
+            base.Draw(time);
+            float deltatime = (float)time.ElapsedGameTime.TotalSeconds;
+            blizzardX += 4 * WindFactor * deltatime * 40;
+            game.SpriteBatch.Draw(game.Assets.BLIZZARD, new Rectangle(0, 0, 800, 600), 
+                new Rectangle((int)blizzardX, 0, 800, 600), Color.White * 0.3f * (Math.Abs(WindFactor)), 0,Vector2.Zero,Microsoft.Xna.Framework.Graphics.SpriteEffects.None,1);
         }
 
         public void Die()

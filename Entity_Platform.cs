@@ -1,4 +1,4 @@
-﻿using DSastR.Core;
+﻿
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -36,6 +36,15 @@ namespace MonoGameJam4Entry
             { PlatformType.FatSensitive,Color.Yellow},
         };
 
+        public override void Start()
+        {
+            if(Main.Random.Next(0,99) < 5)
+            game.EntityManager.AddEntity(new Entity_Coin(game)
+            {
+                Position = new(Position.X, Position.Y - 32 - 16 - 8)
+            });
+        }
+
         public void HandlePlayer(float deltatime, Entity_Player player)
         {
             switch (Type)
@@ -46,6 +55,7 @@ namespace MonoGameJam4Entry
                     break;
                 case PlatformType.Ghost:
                     player.Velocity.Y = -700;
+                    game.Assets.platjump.Play();
                     Dead = true;
                     break;
                 case PlatformType.Explosive:

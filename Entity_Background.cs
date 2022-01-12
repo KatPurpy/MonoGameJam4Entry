@@ -1,5 +1,4 @@
-﻿using DSastR.Core;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -20,20 +19,25 @@ namespace MonoGameJam4Entry
         }
 
         public BGType Type;
-        static BGType CurrentBG;
+        public static BGType CurrentBGType;
+
+        public static float HorizontalBGScroll;
+
         public Entity_Background(Main m, Texture2D bg) : base(m)
         {
             LayerDepth = 0;
             Sprite = bg;
             Position = new(400, -6000/2 + 600);
             Size = new(800,6000);
+            HorizontalBGScroll = 0;
         }
 
         public override void Update(GameTime time)
         {
-            if (Type > CurrentBG && CollidesWith<Entity_Player>())
+            SourceRect = new Rectangle((int)HorizontalBGScroll, 0, 800, 6000);
+            if (Type > CurrentBGType && CollidesWith<Entity_Player>())
             {
-                CurrentBG = Type;
+                CurrentBGType = Type;
                 Console.WriteLine("CURRENT LVL IS " + Type);
                 switch (Type) {
                     case BGType.Mountain:
