@@ -39,8 +39,10 @@ namespace MonoGameJam4Entry
 
         public void Play()
         {
-            CurrentSong?.Dispose();
-            CurrentSong = this;
+
+                CurrentSong?.Pause();
+                CurrentSong = this;
+            
             sound.Play();
             thread = new Thread(new ThreadStart(AudioThread));
             thread.Start();

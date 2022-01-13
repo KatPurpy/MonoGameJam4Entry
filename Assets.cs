@@ -32,6 +32,7 @@ namespace MonoGameJam4Entry
         public StreamedSound mountain;
         public StreamedSound space;
 
+        public SoundEffect blizzard;
         public SoundEffect coin;
         public SoundEffect platjump;
         public SoundEffect death1;

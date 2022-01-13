@@ -44,6 +44,9 @@ namespace MonoGameJam4Entry
                 case SpawnMode.Sky:
                     Generator_Level2(time);
                     break;
+                case SpawnMode.Space:
+                    Generator_Level3(time);
+                    break;
         } }
         float screensize = 600/6;
         int lvl1_ghostplatformcount = 0;
@@ -87,10 +90,35 @@ namespace MonoGameJam4Entry
 
         void Generator_Level2(GameTime time)
         {
-            if (time.TotalGameTime.Milliseconds % 500 == 0)
-            {
-                GeneratePlatform((PlatformType)r.Next(0, (int)PlatformType.FatSensitive),
+            Entity_Player.WindFactor = 0.25f;
+            if (Entity_RunController.LengthAccumulator > screensize/1.5f)
+            
+                {
+                GeneratePlatform((PlatformType)r.Next(0, (int)PlatformType.Falling),
                     new((float)((r.NextDouble()) * 800), 0));
+                Entity_RunController.LengthAccumulator -= screensize/1.5f;
+            }
+        }
+        PlatformType[] lvl3_types = new PlatformType[]
+        {
+                        PlatformType.Falling,
+                                    PlatformType.Falling,
+            PlatformType.Falling,
+            PlatformType.Explosive,
+            PlatformType.Explosive,
+            PlatformType.Ghost,
+            PlatformType.Still,
+                        PlatformType.Still
+        };
+        void Generator_Level3(GameTime time)
+        {
+            Entity_Player.WindFactor = 0f;
+            if (Entity_RunController.LengthAccumulator > screensize / 1.25f)
+            {
+                GeneratePlatform(lvl3_types[r.Next(0,lvl3_types.Length)],
+                    new((float)((r.NextDouble()) * 800), 0));
+
+                Entity_RunController.LengthAccumulator -= screensize / 1.25f;
             }
         }
 

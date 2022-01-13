@@ -42,9 +42,14 @@ namespace MonoGameJam4Entry
                 switch (Type) {
                     case BGType.Mountain:
                         game.Assets.mountain.Play();
+                        Entity_PlatformSpawner.SetSpawnMode(Entity_PlatformSpawner.SpawnMode.Mountain);
                         break;
                     case BGType.Sky:
                         game.Assets.space.Play();
+                        Entity_PlatformSpawner.SetSpawnMode(Entity_PlatformSpawner.SpawnMode.Sky);
+                        break;
+                    case BGType.Space:
+                        Entity_PlatformSpawner.SetSpawnMode(Entity_PlatformSpawner.SpawnMode.Space);
                         break;
                 } }
         }

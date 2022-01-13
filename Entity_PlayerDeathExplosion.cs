@@ -20,10 +20,10 @@ namespace MonoGameJam4Entry
         }
         public override void Start()
         {
-            game.Assets.mountain.Dispose();
+            game.Assets.mountain.Pause();
             game.Assets.RandomDeath.Play();
           //  game.Assets.sky.Dispose();
-            game.Assets.space.Dispose();
+            game.Assets.space.Pause();
         }
         int frame = 0;
         public override void Update(GameTime time)
@@ -36,7 +36,11 @@ namespace MonoGameJam4Entry
                 SourceRect = rect;
             }
             if (frame > 186-4) Size = new(0, 0);
-            if (frame == 245) game.Exit();
+            if (frame == 186-4)
+            {
+                Dead = true;
+                game.EntityManager.AddEntity(new Entity_Roast(game));
+            }
         }
     }
 }

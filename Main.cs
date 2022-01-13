@@ -73,6 +73,7 @@ namespace MonoGameJam4Entry
 
         Random r = new();
 
+        public static float Progress => _.RenderOffset.Y / (6000 * 3 + 600) * 100;
 
         protected override void Update(GameTime gameTime)
         {
@@ -235,6 +236,17 @@ namespace MonoGameJam4Entry
                 style.AntiAliasedFill = style.AntiAliasedLines = style.AntiAliasedLinesUseTex = false;
                 ImGui.GetIO().MouseDrawCursor = true;
         }
+        public static void BeginFixedWindow(string title, int windWidth, int windHeight)
+        {
+            ImGui.SetNextWindowPos(new System.Numerics.Vector2(_.gdm.PreferredBackBufferWidth / 2 - windWidth / 2, _.gdm.PreferredBackBufferHeight / 2 - windHeight / 2), ImGuiCond.FirstUseEver);
+            ImGui.SetNextWindowSize(new System.Numerics.Vector2(windWidth, windHeight), ImGuiCond.FirstUseEver);
+            //  ImGui.SetNextWindowFocus();
+            ImGui.Begin(title, ImGuiWindowFlags.NoSavedSettings | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse);
         }
+        public static string TimeToString(float Time)
+        {
+            return string.Format("{0:mm}:{0:ss}.{1:00}", new TimeSpan(0, 0, 0, (int)Time), Math.Min(99, 100 * (Math.Abs(Time - Math.Truncate(Time)))));
+        }
+    }
     }
 

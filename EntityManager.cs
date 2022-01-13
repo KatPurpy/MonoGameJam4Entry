@@ -76,6 +76,6 @@ using System.Text;
             {
                 Entities[i]?.Destroy();
             }
-            Entities.Clear();
+            
         }
     }
