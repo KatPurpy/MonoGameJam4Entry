@@ -52,13 +52,12 @@ namespace MonoGameJam4Entry
         {
             Main.BeginFixedWindow(title, 300, 200);
             ImGui.TextWrapped(roast);
-            ImGui.TextColored(new(1, 1, 0, 1), "Curr3nc135 r151ng: " + Entity_Player.CoinsCollected);
-            ImGui.TextColored(new(1, 1, 0, 1), "Time: " + Main.TimeToString(Entity_Player.Time));
+            ImGui.TextColored(new(1, 1, 0, 1), "Curr3nc135 r151ng: " + Entity_Player._.CoinsCollected);
+            ImGui.TextColored(new(1, 1, 0, 1), "Time: " + Main.TimeToString(Entity_Player._.Time));
             ImGui.TextColored(new(1, 1, 0, 1), "G0al c0mplet1t10n: " + (Main.Progress).ToString("F2")  + "%%");
             if (ImGui.Button("ACCEPT FAILURE"))
             {
                 game.EntityManager.Clear();
-                PlayerProfile.Data.Coins += Entity_Player.CoinsCollected;
                 game.EntityManager.AddEntity(new Entity_Gym(game));
             }
             ImGui.End();

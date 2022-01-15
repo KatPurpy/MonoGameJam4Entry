@@ -27,11 +27,22 @@ namespace MonoGameJam4Entry
         public Texture2D BG3;
         public Texture2D DEATH;
         public Texture2D BLIZZARD;
+        public Texture2D BADBANANA;
+        public Texture2D EXTRALIFE;
+        public Texture2D STRONKTH;
+        public Texture2D WEIGHT;
+        public Texture2D UNDEADALITY;
+        public Texture2D MONEYPRINTER;
+        public Texture2D DASH;
+        public Texture2D ROCKET;
+        public Texture2D COIN;
 
         public StreamedSound gym;
         public StreamedSound mountain;
+        public StreamedSound sky;
         public StreamedSound space;
 
+        public SoundEffect badbanana;
         public SoundEffect blizzard;
         public SoundEffect coin;
         public SoundEffect platjump;
@@ -39,9 +50,15 @@ namespace MonoGameJam4Entry
         public SoundEffect death2;
         public SoundEffect death3;
         public SoundEffect death4;
+        public SoundEffect resurrect;
+        public SoundEffect rocketincoming;
+        public SoundEffect rocket_launch_1;
+        public SoundEffect rocket_launch_2;
+        public SoundEffect rocket_launch_3;
+        public SoundEffect rocket_launch_4;
 
         public SoundEffect RandomDeath => new SoundEffect[] { death1, death2, death3, death4 }[Main.Random.Next(0, 4)];
-
+        public SoundEffect RocketLaunch => new SoundEffect[] { rocket_launch_1, rocket_launch_2, rocket_launch_3, rocket_launch_4 }[Main.Random.Next(0, 4)];
 
 
         public Assets (Main m)

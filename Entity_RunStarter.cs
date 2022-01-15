@@ -70,6 +70,12 @@ namespace MonoGameJam4Entry
                 Position = new(400, (-6000 / 2 + 600) - 6000 * 2)
             });
 
+            game.EntityManager.AddEntity(new Entity_Background(game, game.Assets.BG3)
+            {
+                Type = Entity_Background.BGType.Space_FuckYou,
+                Position = new(400, (-6000 / 2 + 600) - 6000 * 3)
+            });
+
             game.EntityManager.AddEntity(new Entity_Platform(game)
             {
                 Type = Entity_Platform.PlatformType.Still,

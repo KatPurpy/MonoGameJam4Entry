@@ -73,7 +73,7 @@ namespace MonoGameJam4Entry
 
         Random r = new();
 
-        public static float Progress => _.RenderOffset.Y / (6000 * 3 + 600) * 100;
+        public static float Progress => _.RenderOffset.Y / (6000 * 4 + 600) * 100;
 
         protected override void Update(GameTime gameTime)
         {

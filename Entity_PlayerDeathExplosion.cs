@@ -12,7 +12,7 @@ namespace MonoGameJam4Entry
     {
         public Entity_PlayerDeathExplosion(Main m, Vector2 position) : base(m)
         {
-            Position = position - new Vector2(0,256);
+            Position = position - new Vector2(0,128+32);
             Sprite = m.Assets.DEATH;
             SourceRect = new(0, 0, 64, 64);
             Size = new(512,512);

@@ -15,13 +15,14 @@ namespace MonoGameJam4Entry
             None,
             Mountain,
             Sky,
-            Space
+            Space,
+            Space_FuckYou
         }
 
         public BGType Type;
         public static BGType CurrentBGType;
 
-        public static float HorizontalBGScroll;
+
 
         public Entity_Background(Main m, Texture2D bg) : base(m)
         {
@@ -29,12 +30,12 @@ namespace MonoGameJam4Entry
             Sprite = bg;
             Position = new(400, -6000/2 + 600);
             Size = new(800,6000);
-            HorizontalBGScroll = 0;
+
         }
 
         public override void Update(GameTime time)
         {
-            SourceRect = new Rectangle((int)HorizontalBGScroll, 0, 800, 6000);
+           // SourceRect = new Rectangle((int)HorizontalBGScroll, 0, 800, 6000);
             if (Type > CurrentBGType && CollidesWith<Entity_Player>())
             {
                 CurrentBGType = Type;
@@ -45,11 +46,16 @@ namespace MonoGameJam4Entry
                         Entity_PlatformSpawner.SetSpawnMode(Entity_PlatformSpawner.SpawnMode.Mountain);
                         break;
                     case BGType.Sky:
-                        game.Assets.space.Play();
+                        game.Assets.sky.Play();
                         Entity_PlatformSpawner.SetSpawnMode(Entity_PlatformSpawner.SpawnMode.Sky);
                         break;
                     case BGType.Space:
+                        game.Assets.space.Play();
                         Entity_PlatformSpawner.SetSpawnMode(Entity_PlatformSpawner.SpawnMode.Space);
+                        break;
+                    case BGType.Space_FuckYou:
+                        game.Assets.space.Play();
+                        Entity_PlatformSpawner.SetSpawnMode(Entity_PlatformSpawner.SpawnMode.Space_FuckYou);
                         break;
                 } }
         }

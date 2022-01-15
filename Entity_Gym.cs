@@ -15,14 +15,14 @@ namespace MonoGameJam4Entry
         {
             Size = new(800, 600);
             Position = new(400, 300);
-            Sprite = m.Assets.placeholder;
+            Sprite = m.Assets.BGG;
         }
 
         readonly int[] MoveSpeedUpgradeCosts = new[]
         {
             10,
-            20,
-            30
+            10,
+            25
         };
 
         readonly int[] JumpUpgradeCosts = new[]
@@ -34,57 +34,101 @@ namespace MonoGameJam4Entry
         readonly int[] UndeadalityFactor = new[]
         {
             10,
-            20
         };
 
         readonly int[] HUH = new[]
         {
-            50
+            22
         };
 
-        readonly int[] BadBananaPrices = new[] { 5, 5, 5 };
+        readonly int[] BadBananaPrices = new[] { 5, 5, 5, 5, 5 };
         readonly int[] DashPrices = new[] { 2, 2, 2 };
-        readonly int[] ExtraLivePrices = new[] { 20,20,20 };
+        readonly int[] ExtraLivePrices = new[] { 10,10,10 };
         IntPtr placeholder;
+
+        enum Thing
+        {
+            Dash,
+            BadBanana,
+            ExtraLife,
+            MoneyBrrr,
+            Stronkth,
+            Weight,
+            Undeadality,
+            Length
+        }
+
+        IntPtr[] thingsToBuyImages = new IntPtr[(int)Thing.Length];
         public override void Start()
         {
             game.RenderOffset = new(0, 0);
             placeholder = game.ImGuiRenderer.BindTexture(game.PixelTexture);
             game.Assets.gym.Play();
+            
+            thingsToBuyImages[(int)Thing.Dash] = game.ImGuiRenderer.BindTexture(game.Assets.DASH);
+            thingsToBuyImages[(int)Thing.BadBanana] = game.ImGuiRenderer.BindTexture(game.Assets.BADBANANA);
+            thingsToBuyImages[(int)Thing.ExtraLife] = game.ImGuiRenderer.BindTexture(game.Assets.EXTRALIFE);
+            thingsToBuyImages[(int)Thing.MoneyBrrr] = game.ImGuiRenderer.BindTexture(game.Assets.MONEYPRINTER);
+
+            thingsToBuyImages[(int)Thing.Stronkth] = game.ImGuiRenderer.BindTexture(game.Assets.STRONKTH);
+            thingsToBuyImages[(int)Thing.Weight] = game.ImGuiRenderer.BindTexture(game.Assets.WEIGHT);
+            thingsToBuyImages[(int)Thing.Undeadality] = game.ImGuiRenderer.BindTexture(game.Assets.UNDEADALITY);
+        
         }
 
         public override void Update(GameTime time)
         {
+            //Origin = new(400, 300);
+          // Rotation = (float)time.TotalGameTime.TotalSeconds;
             //throw new NotImplementedException();
         }
         
         public override void IMGUI(GameTime time)
         {
-            ImGui.Begin("WORKOUT, PHAT BOI",ImGuiWindowFlags.AlwaysAutoResize);
-            BonusButton(ref PlayerProfile.Data.Stronkth, MoveSpeedUpgradeCosts, game.PixelTexture, $"STRONKTH", "Control your fat body better and pwn that wind mechanic.");
-            ImGui.SameLine();
-            BonusButton(ref PlayerProfile.Data.Weight, JumpUpgradeCosts, game.PixelTexture, $"PHAT REDUCE", "Str0nkth p0wered legs 4 h0pp1n l1k3 a bunny.");
-            ImGui.SameLine();
-            BonusButton(ref PlayerProfile.Data.Undeadality, UndeadalityFactor, game.PixelTexture, $"UNDEADALITY FACTOR", "20%% chance of magically resurrecting. tip: gud git.");
-            ImGui.End();
+            if (ImGui.Begin("WORKOUT, PHAT BOI", ImGuiWindowFlags.AlwaysAutoResize))
+            {
+                BonusButton(ref PlayerProfile.Data.Stronkth, MoveSpeedUpgradeCosts, Thing.Stronkth, $"STRONKTH", "Control your fat body better and pwn that wind mechanic.");
+                ImGui.SameLine();
+                BonusButton(ref PlayerProfile.Data.WeightLoss, JumpUpgradeCosts, Thing.Weight, $"PHAT REDUCE", "Str0nkth p0wered legs 4 h0pp1n l1k3 a bunny.");
+                ImGui.SameLine();
+                BonusButton(ref PlayerProfile.Data.Undeadality, UndeadalityFactor, Thing.Undeadality, $"UNDEADALITY FACTOR", "20%% chance of magically resurrecting.", "tip: gud git");
+                ImGui.End();
+            }
+            if (ImGui.Begin("LEGAL DOPPINGS", ImGuiWindowFlags.AlwaysAutoResize))
+            {
 
-            ImGui.Begin("LEGAL DOPPINGS");
-            
-            ImGui.Text("Temporary");
-            BonusButton(ref PlayerProfile.Data.Dashes, DashPrices, game.PixelTexture, "Dash", "Save your sorry ass (donkey) if your fortune cheats with you");
-            ImGui.SameLine();
-            BonusButton(ref PlayerProfile.Data.BadBananas, BadBananaPrices, game.PixelTexture, "BAD BANANA", "Save your sorry ass (donkey) by releasing your gases out of fear, maybe it will work");
-            ImGui.SameLine();
-            BonusButton(ref PlayerProfile.Data.ExtraLives, ExtraLivePrices, game.PixelTexture, "Extra life (hell expensive, git gud)", "y o u l i v e o n c e");
-            ImGui.Text("Permament");
-            BonusButton(ref PlayerProfile.Data.CurrencyPrinter, HUH,game.PixelTexture, "Money printer", "Pinocchio lost his money trying to grow a money tree for you noobs so you can get TWICE AS MUCH currency.");
-            ImGui.End();
+                ImGui.Text("Temporary");
+                BonusButton(ref PlayerProfile.Data.Dashes, DashPrices, Thing.Dash, "SNICKERS", "This thing is useful if you need to need to avoid something really fast.", "Only when you press [SPACE] and it exhausts immediately. In other words, this thing is HELLA USELESS.");
+                ImGui.SameLine();
+                BonusButton(ref PlayerProfile.Data.BadBananas, BadBananaPrices, Thing.BadBanana, "BAD BANANA", "Save your sorry ass (donkey) by releasing your gases out of fear, maybe it will work.", "Press [DOWN] to consume.");
+                ImGui.SameLine();
+                BonusButton(ref PlayerProfile.Data.ExtraLives, ExtraLivePrices, Thing.ExtraLife, "HEART", "y o u l i v e o n c e");
+                ImGui.Text("Permament");
+                BonusButton(ref PlayerProfile.Data.CurrencyPrinter, HUH, Thing.MoneyBrrr, "A MYSTERIOUS CURRENCY GENERATION DEVICE", "Pinocchio lost his money trying to grow a money tree for you noobs so you can get TWICE AS MUCH currency.");
+                ImGui.End();
+            }
 
+            if (ImGui.Begin("STATS", ImGuiWindowFlags.AlwaysAutoResize))
+            {
+                ImGui.TextColored(new(1, 1, 0, 1), "CURRENCY: " + PlayerProfile.Data.Coins);
 
-            ImGui.Begin("funny window",ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse);
-            ImGui.Text("Last run");
-            ImGui.Text("Time: 00:04");
-            ImGui.Text("Cause of death: workout, damn it, you are too fat for that level");
+                ImGui.NewLine();
+                ImGui.Text("TOTAL STATS");
+                ImGui.Text("===========");
+                ImGui.Text("Total currency wasted: " + PlayerProfile.Data.MoneySpent);
+                ImGui.Text("Total currency risen: " + PlayerProfile.Data.MoneyEarned);
+                ImGui.Text("Total epic fails: " + PlayerProfile.Data.TotalDeaths);
+
+                ImGui.NewLine();
+                ImGui.Text("LAST RUN STATS");
+                ImGui.Text("===========");
+                ImGui.Text("Percentage: " + PlayerProfile.Data.LastRunPercent.ToString("F2") + "%%");
+                ImGui.Text("Time: " + Main.TimeToString(PlayerProfile.Data.LastRunTime));
+                ImGui.Text("Currency: " + PlayerProfile.Data.LastRunCoins);
+                ImGui.End();
+            }
+
+            ImGui.Begin("FUNNY WINDOW",ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse);
             if (ImGui.Button("BEGIN"))
             {
                 Dead = true;
@@ -93,15 +137,17 @@ namespace MonoGameJam4Entry
             ImGui.End();
         }
 
-        bool BonusButton(ref int targetval, int[] prices, Texture2D texture, string name, string description)
+        bool BonusButton(ref int targetval, int[] prices, Thing thing, string name, string description, string howtouse = null)
         {
             ImGui.PushID(name);
-            bool click = ImGui.ImageButton(placeholder,new(64,64));
+            var pointer = thingsToBuyImages[(int)thing];
+            bool click = ImGui.ImageButton(pointer == IntPtr.Zero ? placeholder : pointer,new(64,64));
             if (ImGui.IsItemHovered())
             {
                 ImGui.BeginTooltip();
                 ImGui.TextColored(new(1,1,0,1), name + $" ({targetval}/{prices.Length})");
                 ImGui.BulletText(description);
+                if (howtouse != null) ImGui.BulletText(howtouse);
                 if (prices.Length != targetval)
                 {
                     ImGui.BulletText("Price: " + prices[targetval] + " currencies");
@@ -113,9 +159,10 @@ namespace MonoGameJam4Entry
                     ImGui.EndTooltip();
             }
 
-            if (click && targetval < prices.Length)
+            if (click && targetval < prices.Length && PlayerProfile.Data.Coins >= prices[targetval])
             {
-                
+                PlayerProfile.Data.Coins -= prices[targetval];
+                PlayerProfile.Data.MoneySpent += prices[targetval];
                 targetval++;
             }
             ImGui.PopID();

@@ -22,7 +22,9 @@ using System.Text.Json;
         public Color Color = Color.White;
         public float Alpha = 1;
         public float LayerDepth = 0.5f;
+    public float Rotation = 0;
         public SpriteEffects Effects = SpriteEffects.None;
+    public Vector2 Origin;
 
         public bool Activated = true;
 
@@ -40,12 +42,12 @@ new Rectangle((int)(game.RenderOffset.X + Position.X - Size.X / 2), (int)(game.R
         public bool NeedsToStart = true;
         public bool Dead = false;
 
-        public virtual void Start() { }
+    public virtual void Start() { }
         public abstract void Update(GameTime time);
         public virtual void IMGUI(GameTime time) { }
         public virtual void Draw(GameTime time)
         {
-            game.SpriteBatch.Draw(Sprite, CollisionBox, SourceRect, Color * Alpha, 0, Vector2.Zero, Effects, LayerDepth);
+            game.SpriteBatch.Draw(Sprite, CollisionBox, SourceRect, Color * Alpha, Rotation, Origin, Effects, LayerDepth);
         }
 
         public virtual void Destroy() {

@@ -42,13 +42,13 @@ namespace MonoGameJam4Entry
         {
             if (monkey.Dead) return;
             float deltatime = (float)time.ElapsedGameTime.TotalSeconds;
-            float s = (penaltySpeed + baseSpeed + speed) * deltatime * ((float)PlayerProfile.Data.Weight/2+1);
+            float s = (penaltySpeed + baseSpeed + speed) * deltatime * ((float)PlayerProfile.Data.WeightLoss/2+1);
             game.RenderOffset.Y += s;
             LengthAccumulator += s;
             speed += deltatime * 0.5f;
 
             float edge = 1- ((game.RenderOffset.Y + monkey.Position.Y) / (600));
-            penaltySpeed = (edge < (1-0.25f) ? 0 : (((float)PlayerProfile.Data.Weight / 2 + 1)) * 200) * edge;
+            penaltySpeed = (edge < (1-0.25f) ? 0 : (((float)PlayerProfile.Data.WeightLoss / 2 + 1)) * 200) * edge;
         }
     }
 }
