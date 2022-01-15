@@ -201,8 +201,7 @@ namespace MonoGameJam4Entry
         int flashtext = 0;
         public override void IMGUI(GameTime time)
         {
-            Console.WriteLine(Main.Progress);
-            if(Main.Progress >= 95)
+            if(Main.Complete)
             {
                 ImGui.GetForegroundDrawList().AddText(Main._.FontPTR, 50, new(0, 
                     0),
@@ -252,14 +251,16 @@ namespace MonoGameJam4Entry
             Size = new(0, 0);
 
             PlayerProfile.Data.Coins += CoinsCollected;
-            PlayerProfile.Data.MoneyEarned += CoinsCollected;
-            PlayerProfile.Data.LastRunCoins = CoinsCollected;
-            PlayerProfile.Data.LastRunPercent = Main.Progress;
-            PlayerProfile.Data.LastRunTime = Time;
-            PlayerProfile.Data.TotalDeaths++;
+            PlayerProfile.Data.StatTotalMoneyEarned += CoinsCollected;
+            PlayerProfile.Data.StatLastRunCoins = CoinsCollected;
+            PlayerProfile.Data.StatLastRunPercent = Main.Progress;
+            PlayerProfile.Data.StatLastRunTime = Time;
+            PlayerProfile.Data.StatTotalTimeRunning += Time;
+            PlayerProfile.Data.StatTotalDeaths++;
             game.EntityManager.AddEntity(new Entity_PlayerDeathExplosion(game, Position));
             Position = new(0, 9999999);
             Dead = true;
+            PlayerProfile.Save();
             blizzardSound.Dispose();
             //game.Exit();
         }

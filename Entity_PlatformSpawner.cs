@@ -56,9 +56,9 @@ namespace MonoGameJam4Entry
         private void Generator_Level4(GameTime time)
         {
             fuckyou_rocket_time -= (float)time.ElapsedGameTime.TotalSeconds;
-            if(fuckyou_rocket_time > 0)
+            if(fuckyou_rocket_time < 0)
             {
-                fuckyou_rocket_time = 3;
+                fuckyou_rocket_time = 5;
                 GenerateRocket(Entity_HazardRocket.StartLocation.Bottom);
             }
             Generator_Level2(time);

@@ -25,6 +25,7 @@ namespace MonoGameJam4Entry
         public Texture2D BG1;
         public Texture2D BG2;
         public Texture2D BG3;
+        public Texture2D BG4;
         public Texture2D DEATH;
         public Texture2D BLIZZARD;
         public Texture2D BADBANANA;
@@ -37,10 +38,36 @@ namespace MonoGameJam4Entry
         public Texture2D ROCKET;
         public Texture2D COIN;
 
+        public Texture2D FALLING;
+        public Texture2D TRAMPOLINE;
+        public Texture2D EXPLOSIVE;
+
+        public Texture2D OUTRO0000;
+        public Texture2D OUTRO0001;
+        public Texture2D OUTRO0002;
+        public Texture2D OUTRO0003;
+        public Texture2D OUTRO0004;
+        public Texture2D OUTRO0005;
+        public Texture2D OUTRO0006;
+        public Texture2D OUTRO0007;
+
+        public Texture2D INTRO0000;
+        public Texture2D INTRO0001;
+        public Texture2D INTRO0002;
+        public Texture2D INTRO0003;
+        public Texture2D INTRO0004;
+        public Texture2D INTRO0005;
+        public Texture2D INTRO0006;
+        public Texture2D INTRO0007;
+        public Texture2D INTRO0008;
+        public Texture2D INTRO0009;
+        public Texture2D INTRO0010;
+
         public StreamedSound gym;
         public StreamedSound mountain;
         public StreamedSound sky;
         public StreamedSound space;
+        public StreamedSound ending;
 
         public SoundEffect badbanana;
         public SoundEffect blizzard;

@@ -32,6 +32,11 @@ namespace MonoGameJam4Entry
         public Vector2 RenderOffset;
 
         public EntityManager EntityManager;
+        Random r = new();
+
+        public static float Progress => _.RenderOffset.Y / (6000 * 4 + 600) * 100;
+
+        public static bool Complete => Progress >= 95;
 
         public Main()
         {
@@ -57,12 +62,47 @@ namespace MonoGameJam4Entry
             EntityManager = new EntityManager(this);
 
             //EntityManager.AddEntity(new Entity_RunStarter(this));
-            EntityManager.AddEntity(new Entity_Gym(this));
+            //EntityManager.AddEntity(new Entity_Gym(this));
 
             Sampler = new SamplerState();
             Sampler.AddressU = TextureAddressMode.Wrap;
             Sampler.AddressV = TextureAddressMode.Wrap;
             Sampler.Filter = TextureFilter.Point;
+
+            
+
+            if (PlayerProfile.New)
+            {
+                EntityManager.AddEntity(new Entity_CutscenePlayer(this,
+
+                    new Texture2D[]
+                    {
+                    Assets.INTRO0000,
+                    Assets.INTRO0001,
+                    Assets.INTRO0002,
+                    Assets.INTRO0003,
+                    Assets.INTRO0004,
+                    Assets.INTRO0005,
+                    Assets.INTRO0006,
+                    Assets.INTRO0007,
+                    Assets.INTRO0008,
+                    Assets.INTRO0009,
+                    Assets.INTRO0010,
+                    },
+                    new Dictionary<int, Action>(),
+                    Exit
+                    ));
+            }
+            else
+            {
+                PlayerProfile.Load();
+                EntityManager.AddEntity(new Entity_Gym(this));
+            }
+        }
+
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            PlayerProfile.Save();
         }
 
         protected override void Dispose(bool disposing)
@@ -71,12 +111,10 @@ namespace MonoGameJam4Entry
             base.Dispose(disposing);
         }
 
-        Random r = new();
-
-        public static float Progress => _.RenderOffset.Y / (6000 * 4 + 600) * 100;
 
         protected override void Update(GameTime gameTime)
         {
+            PlayerProfile.Data.StatTotalTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             EntityManager.Update(gameTime);
         }
 

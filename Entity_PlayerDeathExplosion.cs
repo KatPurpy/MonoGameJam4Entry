@@ -21,9 +21,9 @@ namespace MonoGameJam4Entry
         public override void Start()
         {
             game.Assets.mountain.Pause();
-            game.Assets.RandomDeath.Play();
-          //  game.Assets.sky.Dispose();
+            game.Assets.sky.Pause();
             game.Assets.space.Pause();
+            game.Assets.RandomDeath.Play();
         }
         int frame = 0;
         public override void Update(GameTime time)

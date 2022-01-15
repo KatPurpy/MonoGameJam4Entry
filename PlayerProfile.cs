@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MonoGameJam4Entry
@@ -11,20 +13,43 @@ namespace MonoGameJam4Entry
         public static Datum Data = new();
         public class Datum
         {
-            public float LastRunTime;
-            public float LastRunPercent;
-            public int LastRunCoins;
 
-            public int TotalDeaths;
+            public float StatLastRunTime;
+            public float StatLastRunPercent;
+            public int StatLastRunCoins;
+
+            public float StatTotalTime;
+            public float StatTotalTimeRunning;
+            public int StatTotalDeaths;
+            public int StatTotalMoneyEarned;
+            
             public int Stronkth = 0, WeightLoss = 0, Undeadality = 0;
-            internal int Dashes;
-            internal int BadBananas;
-            internal int ExtraLives;
-            internal int Coins = int.MaxValue;
-            internal int CurrencyPrinter;
-            internal int MoneySpent;
+            public int Dashes;
+            public int BadBananas;
+            public int ExtraLives;
+            public int Coins;
+            public int CurrencyPrinter;
+            public int MoneySpent;
+        }
 
-            public int MoneyEarned;
+        public static bool New => !File.Exists("PLAYERPROFILE");
+
+        static JsonSerializerOptions opt = new JsonSerializerOptions()
+        {
+            IncludeFields = true
+        };
+
+        public static void Save()
+        {
+            File.WriteAllText("PLAYERPROFILE", JsonSerializer.Serialize(Data,opt));
+        }
+
+        public static void Load()
+        {
+            if (File.Exists("PLAYERPROFILE"))
+            {
+                Data = JsonSerializer.Deserialize<Datum>(File.ReadAllText("PLAYERPROFILE"), opt);
+            }
         }
 
     }

@@ -35,7 +35,7 @@ namespace MonoGameJam4Entry
             }
             else
             {
-                game.Assets.rocketincoming.Play(1f, 0, 0);
+                
             }
             Position = new Vector2(9999, 9999);
         }
@@ -45,6 +45,13 @@ namespace MonoGameJam4Entry
             Instances--;
             base.Destroy();
         }
+        float panPos => startLoc == StartLocation.Bottom ? 0 : (Position.X / 800 * 2 - 1);
+        public override void Start()
+        {
+            
+            Target();
+            game.Assets.rocketincoming.Play(1f, 0, panPos);
+        }
 
         public override void Update(GameTime time)
         {
@@ -53,7 +60,7 @@ namespace MonoGameJam4Entry
             float dt = (float)time.ElapsedGameTime.TotalSeconds;
 
             timer += dt;
-            Console.WriteLine(Instances);
+
             if (startLoc == StartLocation.Right) Effects = Microsoft.Xna.Framework.Graphics.SpriteEffects.FlipHorizontally;
             Rectangle screenRect = new(0, 0, 800, 600);
 
@@ -61,7 +68,7 @@ namespace MonoGameJam4Entry
             {
                 if (!launched)
                 {
-                    game.Assets.RocketLaunch.Play();
+                    game.Assets.RocketLaunch.Play(1, 0, panPos) ;
                     launched = true;
                 }
                 switch (startLoc)

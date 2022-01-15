@@ -41,8 +41,17 @@ namespace MonoGameJam4Entry
         public Entity_Roast(Main m) : base(m)
         {
             Sprite = m.PixelTexture;
-            title = OneWordInsults[Main.Random.Next(0, OneWordInsults.Length)];
-            roast = EdgyTeenagerQuotes[Main.Random.Next(0, EdgyTeenagerQuotes.Length)];
+            if (!Main.Complete)
+            {
+                title = OneWordInsults[Main.Random.Next(0, OneWordInsults.Length)];
+                roast = EdgyTeenagerQuotes[Main.Random.Next(0, EdgyTeenagerQuotes.Length)];
+            }
+            else
+            {
+                title = "Great job!";
+                roast = "No, seriously, you did great! Monke asked me to send you his regards.";
+                game.Assets.ending.Play();
+            }
         }
 
         public override void Update(GameTime time)
@@ -55,10 +64,13 @@ namespace MonoGameJam4Entry
             ImGui.TextColored(new(1, 1, 0, 1), "Curr3nc135 r151ng: " + Entity_Player._.CoinsCollected);
             ImGui.TextColored(new(1, 1, 0, 1), "Time: " + Main.TimeToString(Entity_Player._.Time));
             ImGui.TextColored(new(1, 1, 0, 1), "G0al c0mplet1t10n: " + (Main.Progress).ToString("F2")  + "%%");
-            if (ImGui.Button("ACCEPT FAILURE"))
+            if (ImGui.Button(Main.Complete ? "ACCEPT VICTORY" : "ACCEPT FAILURE"))
             {
                 game.EntityManager.Clear();
-                game.EntityManager.AddEntity(new Entity_Gym(game));
+                if (!Main.Complete)
+                {
+                    game.EntityManager.AddEntity(new Entity_Gym(game));
+                }
             }
             ImGui.End();
         }

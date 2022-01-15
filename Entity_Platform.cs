@@ -31,14 +31,33 @@ namespace MonoGameJam4Entry
         Dictionary<PlatformType, Color> colorMap = new()
         {
             { PlatformType.Still, Color.Gray},
-            { PlatformType.Ghost, new Color(50,50,50,255/4*3)},
+            { PlatformType.Ghost, Color.White},
             { PlatformType.Explosive, new Color(128,0,0,255)},
             { PlatformType.Falling,Color.Yellow},
         };
 
         public override void Start()
         {
-            if(Main.Random.Next(0,99) < 5)
+            if(Type == PlatformType.Ghost)
+            {
+                Sprite = game.Assets.TRAMPOLINE;
+                Effects = 
+                    Main.Random.Next(0,2) == 1 ?
+                    Microsoft.Xna.Framework.Graphics.SpriteEffects.FlipHorizontally : 
+                    Microsoft.Xna.Framework.Graphics.SpriteEffects.None;
+            }
+
+            if (Type == PlatformType.Explosive)
+            {
+                Sprite = game.Assets.EXPLOSIVE;
+            }
+
+            if (Type == PlatformType.Falling)
+            {
+                Sprite = game.Assets.FALLING;
+            }
+
+            if (Main.Random.Next(0,99) < 20)
             game.EntityManager.AddEntity(new Entity_Coin(game)
             {
                 Position = new(Position.X, Position.Y - 32 - 16 - 8)

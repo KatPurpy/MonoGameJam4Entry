@@ -21,14 +21,14 @@ namespace MonoGameJam4Entry
         readonly int[] MoveSpeedUpgradeCosts = new[]
         {
             10,
-            10,
-            25
+            20,
+            30
         };
 
         readonly int[] JumpUpgradeCosts = new[]
         {
             5,
-            15
+            20
         };
 
         readonly int[] UndeadalityFactor = new[]
@@ -38,7 +38,7 @@ namespace MonoGameJam4Entry
 
         readonly int[] HUH = new[]
         {
-            22
+            50
         };
 
         readonly int[] BadBananaPrices = new[] { 5, 5, 5, 5, 5 };
@@ -61,6 +61,7 @@ namespace MonoGameJam4Entry
         IntPtr[] thingsToBuyImages = new IntPtr[(int)Thing.Length];
         public override void Start()
         {
+            PlayerProfile.Save();
             game.RenderOffset = new(0, 0);
             placeholder = game.ImGuiRenderer.BindTexture(game.PixelTexture);
             game.Assets.gym.Play();
@@ -78,6 +79,7 @@ namespace MonoGameJam4Entry
 
         public override void Update(GameTime time)
         {
+
             //Origin = new(400, 300);
           // Rotation = (float)time.TotalGameTime.TotalSeconds;
             //throw new NotImplementedException();
@@ -102,7 +104,11 @@ namespace MonoGameJam4Entry
                 ImGui.SameLine();
                 BonusButton(ref PlayerProfile.Data.BadBananas, BadBananaPrices, Thing.BadBanana, "BAD BANANA", "Save your sorry ass (donkey) by releasing your gases out of fear, maybe it will work.", "Press [DOWN] to consume.");
                 ImGui.SameLine();
-                BonusButton(ref PlayerProfile.Data.ExtraLives, ExtraLivePrices, Thing.ExtraLife, "HEART", "y o u l i v e o n c e");
+                BonusButton(ref PlayerProfile.Data.ExtraLives, ExtraLivePrices, Thing.ExtraLife, "HEART", 
+                    @"- Rhino, where do you get these hearts?
+- Shut up and let me do the surgery
+- Without anesthesia?
+- >:|");
                 ImGui.Text("Permament");
                 BonusButton(ref PlayerProfile.Data.CurrencyPrinter, HUH, Thing.MoneyBrrr, "A MYSTERIOUS CURRENCY GENERATION DEVICE", "Pinocchio lost his money trying to grow a money tree for you noobs so you can get TWICE AS MUCH currency.");
                 ImGui.End();
@@ -115,16 +121,19 @@ namespace MonoGameJam4Entry
                 ImGui.NewLine();
                 ImGui.Text("TOTAL STATS");
                 ImGui.Text("===========");
+                ImGui.Text("Total time spent: " + Main.TimeToString(PlayerProfile.Data.StatTotalTime));
+                ImGui.Text("Total time spent trying: " + Main.TimeToString(PlayerProfile.Data.StatTotalTimeRunning));
                 ImGui.Text("Total currency wasted: " + PlayerProfile.Data.MoneySpent);
-                ImGui.Text("Total currency risen: " + PlayerProfile.Data.MoneyEarned);
-                ImGui.Text("Total epic fails: " + PlayerProfile.Data.TotalDeaths);
+                ImGui.Text("Total currency risen: " + PlayerProfile.Data.StatTotalMoneyEarned);
+                ImGui.Text("Total epic fails: " + PlayerProfile.Data.StatTotalDeaths);
+                ImGui.Text("Meaning of life: 42");
 
                 ImGui.NewLine();
                 ImGui.Text("LAST RUN STATS");
                 ImGui.Text("===========");
-                ImGui.Text("Percentage: " + PlayerProfile.Data.LastRunPercent.ToString("F2") + "%%");
-                ImGui.Text("Time: " + Main.TimeToString(PlayerProfile.Data.LastRunTime));
-                ImGui.Text("Currency: " + PlayerProfile.Data.LastRunCoins);
+                ImGui.Text("Percentage: " + PlayerProfile.Data.StatLastRunPercent.ToString("F2") + "%%");
+                ImGui.Text("Time: " + Main.TimeToString(PlayerProfile.Data.StatLastRunTime));
+                ImGui.Text("Currency: " + PlayerProfile.Data.StatLastRunCoins);
                 ImGui.End();
             }
 
