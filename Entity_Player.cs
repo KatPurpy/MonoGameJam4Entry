@@ -227,6 +227,7 @@ namespace MonoGameJam4Entry
             for (int i = 0; i < PlayerProfile.Data.Dashes; i++)
                 game.SpriteBatch.Draw(game.Assets.DASH, new Rectangle(i * 48, 96, 48, 48), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
+        public bool UndeadalityUsed = false;
         public bool Dieded = false;
         int invulnurabilityFrames;
         public void Die(bool forcedamage)
@@ -234,8 +235,9 @@ namespace MonoGameJam4Entry
             if (invulnurabilityFrames > 0 && !forcedamage) return;
             if (Dieded) return;
 
-            if (PlayerProfile.Data.Undeadality == 1 && Main.Random.Next(0, 4) == 0)
+            if (PlayerProfile.Data.Undeadality == 1 && !UndeadalityUsed && Main.Random.Next(0, 4) == 0)
             {
+                UndeadalityUsed = true;
                 Resurrect();
                 return;
             }
