@@ -43,6 +43,8 @@ namespace MonoGameJam4Entry
             gdm = new GraphicsDeviceManager(this);
             _ = this;
         }
+
+        public IntPtr[] thingsToBuyImages = new IntPtr[(int)Entity_Gym.Thing.Length];
         protected override void Initialize()
         {
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, 800, 600,false,SurfaceFormat.Color,DepthFormat.Depth24Stencil8);
@@ -88,6 +90,15 @@ namespace MonoGameJam4Entry
             }
 
             gdm.ApplyChanges();
+
+            thingsToBuyImages[(int)Entity_Gym.Thing.Dash] = ImGuiRenderer.BindTexture(Assets.DASH);
+            thingsToBuyImages[(int)Entity_Gym.Thing.BadBanana] = ImGuiRenderer.BindTexture(Assets.BADBANANA);
+            thingsToBuyImages[(int)Entity_Gym.Thing.ExtraLife] = ImGuiRenderer.BindTexture(Assets.EXTRALIFE);
+            thingsToBuyImages[(int)Entity_Gym.Thing.MoneyBrrr] = ImGuiRenderer.BindTexture(Assets.MONEYPRINTER);
+
+            thingsToBuyImages[(int)Entity_Gym.Thing.Stronkth] = ImGuiRenderer.BindTexture(Assets.STRONKTH);
+            thingsToBuyImages[(int)Entity_Gym.Thing.Weight] = ImGuiRenderer.BindTexture(Assets.WEIGHT);
+            thingsToBuyImages[(int)Entity_Gym.Thing.Undeadality] = ImGuiRenderer.BindTexture(Assets.UNDEADALITY);
         }
 
         protected override void OnExiting(object sender, EventArgs args)

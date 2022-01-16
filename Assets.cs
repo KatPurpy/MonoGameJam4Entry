@@ -115,7 +115,7 @@ namespace MonoGameJam4Entry
 
         public Assets (Main m)
         {
-            Console.WriteLine("SUPER MONKEY POST CELEBRATION DIET BETA BUILD");
+            Console.WriteLine("SUPER MONKEY POST CELEBRATION DIET FINAL BUILD");
             Console.WriteLine("Please wait while them assets are loading...");
             foreach (var a in fieldInfos)
             {

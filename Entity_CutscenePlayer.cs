@@ -117,6 +117,10 @@ new Dictionary<int, Action>()
 () =>
 {
     game.Assets.ending.Play();
+    game.EntityManager.AddEntity(new Entity_Gym(game)
+    {
+        showCredits = true
+    });
 }
 ));
         }

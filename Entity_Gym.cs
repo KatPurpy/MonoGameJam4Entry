@@ -47,7 +47,7 @@ namespace MonoGameJam4Entry
         readonly int[] ExtraLivePrices = new[] { 10,20,30 };
         IntPtr placeholder;
 
-        enum Thing
+        public enum Thing
         {
             Dash,
             BadBanana,
@@ -59,22 +59,15 @@ namespace MonoGameJam4Entry
             Length
         }
 
-        IntPtr[] thingsToBuyImages = new IntPtr[(int)Thing.Length];
+
         public override void Start()
         {
             PlayerProfile.Save();
             game.RenderOffset = new(0, 0);
             placeholder = game.ImGuiRenderer.BindTexture(game.PixelTexture);
-            game.Assets.gym.Play();
+            if(!showCredits) game.Assets.gym.Play();
             
-            thingsToBuyImages[(int)Thing.Dash] = game.ImGuiRenderer.BindTexture(game.Assets.DASH);
-            thingsToBuyImages[(int)Thing.BadBanana] = game.ImGuiRenderer.BindTexture(game.Assets.BADBANANA);
-            thingsToBuyImages[(int)Thing.ExtraLife] = game.ImGuiRenderer.BindTexture(game.Assets.EXTRALIFE);
-            thingsToBuyImages[(int)Thing.MoneyBrrr] = game.ImGuiRenderer.BindTexture(game.Assets.MONEYPRINTER);
 
-            thingsToBuyImages[(int)Thing.Stronkth] = game.ImGuiRenderer.BindTexture(game.Assets.STRONKTH);
-            thingsToBuyImages[(int)Thing.Weight] = game.ImGuiRenderer.BindTexture(game.Assets.WEIGHT);
-            thingsToBuyImages[(int)Thing.Undeadality] = game.ImGuiRenderer.BindTexture(game.Assets.UNDEADALITY);
         
         }
 
@@ -180,7 +173,7 @@ namespace MonoGameJam4Entry
             }
             if (showCredits)
             {
-                if (ImGui.Begin("SUPER MONKEY POST CELEBRATION DIET", ref showCredits, ImGuiWindowFlags.HorizontalScrollbar))
+                if (ImGui.Begin("SUPER MONKEY POST CELEBRATION DIET (c) Kat Purpy, 2022", ref showCredits, ImGuiWindowFlags.HorizontalScrollbar))
                 {
                     int i = 0;
                     foreach (var line in creditLines)
@@ -294,12 +287,12 @@ namespace MonoGameJam4Entry
             return i;
         }
 
-        bool showCredits = false;
+        public bool showCredits = false;
         static string[] creditLines = File.ReadAllLines("CREDITS.TXT");
         bool BonusButton(ref int targetval, int[] prices, Thing thing, string name, string description, string howtouse = null)
         {
             ImGui.PushID(name);
-            var pointer = thingsToBuyImages[(int)thing];
+            var pointer = game.thingsToBuyImages[(int)thing];
             bool click = ImGui.ImageButton(pointer == IntPtr.Zero ? placeholder : pointer,new(64,64));
             if (ImGui.IsItemHovered())
             {

@@ -23,4 +23,7 @@ Sounds
 	Single Vocal Bounce Copyright 2013 Iwan Gabovitch, CC-BY3 license.
 	Countless public domain sources
 
+Font
+	Comic Neue (OFL)
+
 Thank you for playing!
