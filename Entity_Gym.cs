@@ -162,6 +162,7 @@ namespace MonoGameJam4Entry
                     game.Exit();
                 }
 
+
                 bool screen = game.gdm.IsFullScreen;
                 if (ImGui.Checkbox("Full screen", ref screen))
                 {
@@ -169,6 +170,7 @@ namespace MonoGameJam4Entry
                     game.gdm.IsFullScreen = screen;
                     game.gdm.ApplyChanges();
                 }
+                ImGui.Text("(c) Kat Purpy, 2022");
                 ImGui.End();
             }
             if (showCredits)
