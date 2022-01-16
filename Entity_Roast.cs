@@ -1,5 +1,6 @@
 ﻿using ImGuiNET;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +68,11 @@ namespace MonoGameJam4Entry
             if (ImGui.Button(Main.Complete ? "ACCEPT VICTORY" : "ACCEPT FAILURE"))
             {
                 game.EntityManager.Clear();
-                if (!Main.Complete)
+                if (Main.Complete)
+                {
+                    Entity_CutscenePlayer.PlayOutro(game);
+                }
+                else
                 {
                     game.EntityManager.AddEntity(new Entity_Gym(game));
                 }

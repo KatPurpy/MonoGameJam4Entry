@@ -1,0 +1,26 @@
+Game by Kat Purpy
+Ending song by Christiaan Bakker
+Audio streaming code by TechPizza my beloved 
+
+Testers
+	Atlas
+	Leros
+	Lebert
+
+Photos
+	UNSPLASH.COM
+	PIXABAY.COM
+	SNIPSTOCK.COM
+	FREE-STOCK-MUSIC.COM 
+	Moon texture from https://svs.gsfc.nasa.gov/4720
+	Jingle Bells from https://freemidi.org/download3-2357-jingle-bells-christmas
+	Other public domain sources
+
+Sounds 
+	FREESOUND.ORG
+	PIXABAY.COM
+	Rocket launch sounds by dklon (OPENGAMEART.ORG)
+	Single Vocal Bounce Copyright 2013 Iwan Gabovitch, CC-BY3 license.
+	Countless public domain sources
+
+Thank you for playing!

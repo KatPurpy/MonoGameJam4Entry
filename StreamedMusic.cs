@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace MonoGameJam4Entry
 {
-    public class StreamedSound : IDisposable
+    public class StreamedMusic : IDisposable
     {
-        static StreamedSound CurrentSong;
+        static StreamedMusic CurrentSong;
 
         VorbisReader reader;
         public DynamicSoundEffectInstance sound;
@@ -29,7 +29,7 @@ namespace MonoGameJam4Entry
         float[] _readBuffer = new float[BufferSize];
         byte[] _castBuffer = new byte[BufferSize * sizeof(short)];
 
-        public StreamedSound(string s)
+        public StreamedMusic(string s)
         {
             reader = new VorbisReader(s);
             reader.ClipSamples = false;

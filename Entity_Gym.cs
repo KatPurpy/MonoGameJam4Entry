@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,14 +22,14 @@ namespace MonoGameJam4Entry
         readonly int[] MoveSpeedUpgradeCosts = new[]
         {
             10,
-            20,
-            30
+            30,
+            60
         };
 
         readonly int[] JumpUpgradeCosts = new[]
         {
-            5,
-            20
+            15,
+            30
         };
 
         readonly int[] UndeadalityFactor = new[]
@@ -38,12 +39,12 @@ namespace MonoGameJam4Entry
 
         readonly int[] HUH = new[]
         {
-            50
+            150
         };
 
-        readonly int[] BadBananaPrices = new[] { 5, 5, 5, 5, 5 };
+        readonly int[] BadBananaPrices = new[] { 5, 10, 15, 20, 25 };
         readonly int[] DashPrices = new[] { 2, 2, 2 };
-        readonly int[] ExtraLivePrices = new[] { 10,10,10 };
+        readonly int[] ExtraLivePrices = new[] { 10,20,30 };
         IntPtr placeholder;
 
         enum Thing
@@ -87,6 +88,17 @@ namespace MonoGameJam4Entry
         
         public override void IMGUI(GameTime time)
         {
+            if(PlayerProfile.Invalid)
+            {
+                ImGui.Begin("CHEATER", ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse);
+                ImGui.TextColored(new(1,0,0,1),"I know you've changed save file data");
+                ImGui.TextColored(new(1, 0, 0, 1), "You must be ashamed of yourself.");
+                ImGui.TextColored(new(1, 0, 0, 1), "Or not? Good player, breaking the game as usual!");
+                ImGui.TextColored(new(1, 0, 0, 1), "I don't care what you say now, you know the run is invalid.");
+                ImGui.TextColored(new(1, 0, 0, 1), "Restore the changes and be an epic gamer next time. I hope you made a backup.");
+                ImGui.Text("With love, Kat Purpy");
+                ImGui.End();
+            }
             if (ImGui.Begin("WORKOUT, PHAT BOI", ImGuiWindowFlags.AlwaysAutoResize))
             {
                 BonusButton(ref PlayerProfile.Data.Stronkth, MoveSpeedUpgradeCosts, Thing.Stronkth, $"STRONKTH", "Control your fat body better and pwn that wind mechanic.");
@@ -137,15 +149,153 @@ namespace MonoGameJam4Entry
                 ImGui.End();
             }
 
-            ImGui.Begin("FUNNY WINDOW",ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse);
-            if (ImGui.Button("BEGIN"))
+            if (ImGui.Begin("FUNNY WINDOW", ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse))
             {
-                Dead = true;
-                game.EntityManager.AddEntity(new Entity_RunStarter(game));
+                if (ImGui.Button("BEGIN"))
+                {
+                    Dead = true;
+                    game.EntityManager.AddEntity(new Entity_RunStarter(game));
+                }
+
+                if (ImGui.Button("CREDITS"))
+                {
+                   showCredits = true;
+                }
+
+
+
+                if (ImGui.Button("QUIT"))
+                {
+                    game.Exit();
+                }
+
+                bool screen = game.gdm.IsFullScreen;
+                if (ImGui.Checkbox("Full screen", ref screen))
+                {
+                    PlayerProfile.Data.Fullscreen = screen;
+                    game.gdm.IsFullScreen = screen;
+                    game.gdm.ApplyChanges();
+                }
+                ImGui.End();
             }
-            ImGui.End();
+            if (showCredits)
+            {
+                if (ImGui.Begin("SUPER MONKEY POST CELEBRATION DIET", ref showCredits, ImGuiWindowFlags.HorizontalScrollbar))
+                {
+                    int i = 0;
+                    foreach (var line in creditLines)
+                    {
+                        HsvToRgb((PlayerProfile.Data.StatTotalTime * 100 + (i--*20) )% 360, 1, 1, out var r, out var g, out var b);
+                        ImGui.TextColored(new System.Numerics.Vector4(r, g, b, 255) / 255, line);
+                    }
+                    ImGui.End();
+                }
+            }
         }
 
+        void HsvToRgb(double h, double S, double V, out int r, out int g, out int b)
+        {
+            double H = h;
+            while (H < 0) { H += 360; };
+            while (H >= 360) { H -= 360; };
+            double R, G, B;
+            if (V <= 0)
+            { R = G = B = 0; }
+            else if (S <= 0)
+            {
+                R = G = B = V;
+            }
+            else
+            {
+                double hf = H / 60.0;
+                int i = (int)Math.Floor(hf);
+                double f = hf - i;
+                double pv = V * (1 - S);
+                double qv = V * (1 - S * f);
+                double tv = V * (1 - S * (1 - f));
+                switch (i)
+                {
+
+                    // Red is the dominant color
+
+                    case 0:
+                        R = V;
+                        G = tv;
+                        B = pv;
+                        break;
+
+                    // Green is the dominant color
+
+                    case 1:
+                        R = qv;
+                        G = V;
+                        B = pv;
+                        break;
+                    case 2:
+                        R = pv;
+                        G = V;
+                        B = tv;
+                        break;
+
+                    // Blue is the dominant color
+
+                    case 3:
+                        R = pv;
+                        G = qv;
+                        B = V;
+                        break;
+                    case 4:
+                        R = tv;
+                        G = pv;
+                        B = V;
+                        break;
+
+                    // Red is the dominant color
+
+                    case 5:
+                        R = V;
+                        G = pv;
+                        B = qv;
+                        break;
+
+                    // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
+
+                    case 6:
+                        R = V;
+                        G = tv;
+                        B = pv;
+                        break;
+                    case -1:
+                        R = V;
+                        G = pv;
+                        B = qv;
+                        break;
+
+                    // The color is not defined, we should throw an error.
+
+                    default:
+                        //LFATAL("i Value error in Pixel conversion, Value is %d", i);
+                        R = G = B = V; // Just pretend its black/white
+                        break;
+                }
+            }
+            r = Clamp((int)(R * 255.0));
+            g = Clamp((int)(G * 255.0));
+            b = Clamp((int)(B * 255.0));
+        }
+
+        /// <summary>
+        /// Clamp a value to 0-255
+        /// </summary>
+        int Clamp(int i)
+        {
+            if (i < 0) return 0;
+            if (i > 255) return 255;
+            return i;
+        }
+
+        bool showCredits = false;
+        static string[] creditLines = File.ReadAllLines("CREDITS.TXT");
         bool BonusButton(ref int targetval, int[] prices, Thing thing, string name, string description, string howtouse = null)
         {
             ImGui.PushID(name);
@@ -168,11 +318,18 @@ namespace MonoGameJam4Entry
                     ImGui.EndTooltip();
             }
 
-            if (click && targetval < prices.Length && PlayerProfile.Data.Coins >= prices[targetval])
+            if (click) { 
+                if(targetval < prices.Length && PlayerProfile.Data.Coins >= prices[targetval])
             {
-                PlayerProfile.Data.Coins -= prices[targetval];
-                PlayerProfile.Data.MoneySpent += prices[targetval];
-                targetval++;
+                    game.Assets.stonks.Play();
+                    PlayerProfile.Data.Coins -= prices[targetval];
+                    PlayerProfile.Data.MoneySpent += prices[targetval];
+                    targetval++;
+                }
+                else
+                {
+                    game.Assets.stonknt.Play();
+                } 
             }
             ImGui.PopID();
             return click;

@@ -17,7 +17,7 @@ namespace MonoGameJam4Entry
     {
         public static Main _;
 
-        GraphicsDeviceManager gdm;
+        public GraphicsDeviceManager gdm;
         public SpriteBatch SpriteBatch;
         public Texture2D PixelTexture;
         public Assets Assets;
@@ -47,6 +47,8 @@ namespace MonoGameJam4Entry
         {
             mainRenderTarget = new RenderTarget2D(GraphicsDevice, 800, 600,false,SurfaceFormat.Color,DepthFormat.Depth24Stencil8);
             Window.Title = "Super Monkey Post Celebration Diet";
+            gdm.HardwareModeSwitch = false;
+
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             PixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             PixelTexture.SetData(new[] { Color.White });
@@ -56,14 +58,16 @@ namespace MonoGameJam4Entry
 
             gdm.PreferredBackBufferWidth = 800;
             gdm.PreferredBackBufferHeight = 600;
-            gdm.ApplyChanges();
+
+           
+
             Assets = new(this);
 
             EntityManager = new EntityManager(this);
 
             //EntityManager.AddEntity(new Entity_RunStarter(this));
             //EntityManager.AddEntity(new Entity_Gym(this));
-
+            
             Sampler = new SamplerState();
             Sampler.AddressU = TextureAddressMode.Wrap;
             Sampler.AddressV = TextureAddressMode.Wrap;
@@ -73,36 +77,22 @@ namespace MonoGameJam4Entry
 
             if (PlayerProfile.New)
             {
-                EntityManager.AddEntity(new Entity_CutscenePlayer(this,
-
-                    new Texture2D[]
-                    {
-                    Assets.INTRO0000,
-                    Assets.INTRO0001,
-                    Assets.INTRO0002,
-                    Assets.INTRO0003,
-                    Assets.INTRO0004,
-                    Assets.INTRO0005,
-                    Assets.INTRO0006,
-                    Assets.INTRO0007,
-                    Assets.INTRO0008,
-                    Assets.INTRO0009,
-                    Assets.INTRO0010,
-                    },
-                    new Dictionary<int, Action>(),
-                    Exit
-                    ));
+                gdm.IsFullScreen = PlayerProfile.Data.Fullscreen;
+                Entity_CutscenePlayer.PlayIntro(this);
             }
             else
             {
                 PlayerProfile.Load();
+                gdm.IsFullScreen = PlayerProfile.Data.Fullscreen;
                 EntityManager.AddEntity(new Entity_Gym(this));
             }
+
+            gdm.ApplyChanges();
         }
 
         protected override void OnExiting(object sender, EventArgs args)
         {
-            PlayerProfile.Save();
+            if(!PlayerProfile.New) PlayerProfile.Save();
         }
 
         protected override void Dispose(bool disposing)
@@ -138,8 +128,18 @@ namespace MonoGameJam4Entry
             EntityManager.Draw(gameTime);
             ImGuiRenderer.AfterLayout();
             GraphicsDevice.SetRenderTarget(null);
-            SpriteBatch.Begin();
-            SpriteBatch.Draw(mainRenderTarget, new Rectangle(0, 0, 800, 600), Color.White);
+            SpriteBatch.Begin(samplerState: SamplerState.LinearClamp);
+            SpriteBatch.Draw(
+                mainRenderTarget,
+                new Vector2(GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Height)/2,
+                null,
+                Color.White,
+                0, 
+                new(400,300),
+                (float)GraphicsDevice.Viewport.Height/ 600, 
+                SpriteEffects.None,
+                0
+                );
             SpriteBatch.End();
         }
 
@@ -188,7 +188,7 @@ namespace MonoGameJam4Entry
             }
         }
 
-        public static StreamedSound LoadMusic(string s)
+        public static StreamedMusic LoadMusic(string s)
         {
             return new(s);
         }

@@ -15,9 +15,28 @@ namespace MonoGameJam4Entry
         static FieldInfo[] fieldInfos = typeof(Assets).GetFields(BindingFlags.Public | BindingFlags.Instance);
         static Dictionary<Type, Func<string, object>> assetLoading = new()
         {
-            { typeof(Texture2D), (p) => Main.LoadTexture(Path.Combine("IMAGES", p + ".png")) },
-            { typeof(StreamedSound), (p) => Main.LoadMusic(Path.Combine("MUSIC", p + ".ogg"))},
-            { typeof(SoundEffect), (p)=>Main.LoadSound(Path.Combine("SOUNDS",p + ".ogg"))}
+            { typeof(Texture2D), (p) => {
+                Console.Write($"Loading texture {p}...");
+                var result = Main.LoadTexture(Path.Combine("IMAGES", p + ".png"));
+                Console.WriteLine("DONE");
+                return result;    
+            } },
+            { typeof(StreamedMusic), (p) =>
+            {
+                Console.Write($"Loading music {p}...");
+                var result = Main.LoadMusic(Path.Combine("MUSIC", p + ".ogg"));
+                Console.WriteLine("DONE");
+                return result;
+            }
+            },
+            { typeof(SoundEffect), (p)=>
+            {
+                Console.Write($"Loading sound effect {p}...");
+                var result = Main.LoadSound(Path.Combine("SOUNDS", p + ".ogg"));
+                Console.WriteLine("DONE");
+                return result;
+            }
+            }
         };
 
         public Texture2D placeholder;
@@ -63,12 +82,17 @@ namespace MonoGameJam4Entry
         public Texture2D INTRO0009;
         public Texture2D INTRO0010;
 
-        public StreamedSound gym;
-        public StreamedSound mountain;
-        public StreamedSound sky;
-        public StreamedSound space;
-        public StreamedSound ending;
+        public StreamedMusic intro;
+        public StreamedMusic gym;
+        public StreamedMusic mountain;
+        public StreamedMusic sky;
+        public StreamedMusic space;
+        public StreamedMusic ending;
 
+        public SoundEffect cutscene_intro_yum1;
+        public SoundEffect cutscene_intro_yum2;
+        public SoundEffect stonknt;
+        public SoundEffect hahahahaha;
         public SoundEffect badbanana;
         public SoundEffect blizzard;
         public SoundEffect coin;
@@ -83,6 +107,7 @@ namespace MonoGameJam4Entry
         public SoundEffect rocket_launch_2;
         public SoundEffect rocket_launch_3;
         public SoundEffect rocket_launch_4;
+        public SoundEffect stonks;
 
         public SoundEffect RandomDeath => new SoundEffect[] { death1, death2, death3, death4 }[Main.Random.Next(0, 4)];
         public SoundEffect RocketLaunch => new SoundEffect[] { rocket_launch_1, rocket_launch_2, rocket_launch_3, rocket_launch_4 }[Main.Random.Next(0, 4)];
@@ -90,10 +115,13 @@ namespace MonoGameJam4Entry
 
         public Assets (Main m)
         {
-            foreach(var a in fieldInfos)
+            Console.WriteLine("SUPER MONKEY POST CELEBRATION DIET BETA BUILD");
+            Console.WriteLine("Please wait while them assets are loading...");
+            foreach (var a in fieldInfos)
             {
                 a.SetValue(this, assetLoading[a.FieldType](a.Name));
             }
+            Console.WriteLine("Thanks for patience! Enjoy!");
         }
         public void Dispose()
         {

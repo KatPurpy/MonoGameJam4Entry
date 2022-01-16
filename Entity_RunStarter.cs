@@ -72,7 +72,7 @@ namespace MonoGameJam4Entry
 
             game.EntityManager.AddEntity(new Entity_Background(game, game.Assets.BG4)
             {
-                Type = Entity_Background.BGType.Space_FuckYou,
+                Type = Entity_Background.BGType.Space_FrikYou,
                 Position = new(400, (-6000 / 2 + 600) - 6000 * 3)
             });
 

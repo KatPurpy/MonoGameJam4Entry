@@ -16,7 +16,7 @@ namespace MonoGameJam4Entry
             Mountain,
             Sky,
             Space,
-            Space_FuckYou
+            Space_FrikYou
         }
 
         public BGType Type;
@@ -53,7 +53,7 @@ namespace MonoGameJam4Entry
                         game.Assets.space.Play();
                         Entity_PlatformSpawner.SetSpawnMode(Entity_PlatformSpawner.SpawnMode.Space);
                         break;
-                    case BGType.Space_FuckYou:
+                    case BGType.Space_FrikYou:
                         game.Assets.space.Play();
                         Entity_PlatformSpawner.SetSpawnMode(Entity_PlatformSpawner.SpawnMode.Space_FuckYou);
                         break;
